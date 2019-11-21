@@ -8,7 +8,7 @@
       var formData = {
         paragraph: document.getElementById('paragraph').value
       };
-      xhr.open('POST', "/indexing");
+      xhr.open('POST', "/allParagraph");
       xhr.setRequestHeader("Content-type", "application/json");
       xhr.send(JSON.stringify(formData));
       xhr.onreadystatechange = function () {
@@ -23,7 +23,7 @@
 
     function reset() {
       var xhr = new XMLHttpRequest();
-      xhr.open('DELETE', '/indexing');
+      xhr.open('DELETE', '/allParagraph');
       xhr.responseType = "json";
       xhr.send();
       xhr.onreadystatechange = function () {
@@ -43,7 +43,7 @@
         return;
       }
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/indexing/' + keyword);
+      xhr.open('GET', '/allParagraph/' + keyword);
       xhr.responseType = "json";
       xhr.send();
       xhr.onreadystatechange = function () {

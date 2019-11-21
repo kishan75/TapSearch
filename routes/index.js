@@ -1,6 +1,6 @@
 var router = require('express').Router();
 
-router.use('/indexing', require('./indexing'));
+router.use('/allParagraph', require('./allParagraph'));
 
 router.get('/', function (req, res) {
   res.render('index.ejs');
