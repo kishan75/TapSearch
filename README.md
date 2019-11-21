@@ -14,10 +14,10 @@ The API requires Node.js
 ### To set up and running:
 
 * Clone the repo.
-git clone https://github.com/kishan75/TapSearch.git
+```git clone https://github.com/kishan75/TapSearch.git ```
 * open terminal into directory
-* Setup the application by installing its dependencies with by 'npm install'
-* by 'npm start' command project will be running on http://localhost:3000/.
+* Setup the application by installing its dependencies with by ``` npm install ```
+* by ```npm start``` command project will be running on http://localhost:3000/.
 ***
 ## API Description
 #### /allParagraph *(POST)*
