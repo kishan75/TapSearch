@@ -4,7 +4,7 @@ var allParagraph = {};
 var allWords = {};
 
 router.post('/', function (req, res) {
-  var paragraphs = req.body.para.toLowerCase().split(/\n\s*\n/g);
+  var paragraphs = req.body.paragraph.toLowerCase().split(/\n\s*\n/g);
 
   Object.keys(paragraphs).forEach(function (element) {
 
@@ -34,16 +34,20 @@ router.post('/', function (req, res) {
     });
 
   });
-  res.send(allWords);
+  res.send(paragraphs);
 });
 
 router.get('/:keyword', function (req, res) {
   var word = req.params.keyword;
 
-  if (allWords[word] == undefined)
-    res.send('word not found');
+  if (allWords[word] == undefined) {
+    res.statusMessage = 'word not found';
+    res.status(204).end();
+    return;
+  }
 
-  var topTen = Object.keys(allWords[word]).sort(function compare(a, b) {
+  var topTen = [];
+  Object.keys(allWords[word]).sort(function compare(a, b) {
     var aFrequency = 1.000000 * allWords[word][a] / allParagraph[a].wordCount;
     var bFrequency = 1.000000 * allWords[word][b] / allParagraph[b].wordCount;
     if (aFrequency < bFrequency)
@@ -51,8 +55,8 @@ router.get('/:keyword', function (req, res) {
     if (aFrequency > bFrequency)
       return -1;
     return 0;
-  }).slice(0, 10).map(function (paraKey) {
-    return { [paraKey]: allParagraph[paraKey] };
+  }).slice(0, 10).forEach(function (paraKey) {
+    topTen.push(allParagraph[paraKey].paragraph);
   });
 
   res.send(topTen);
@@ -61,7 +65,7 @@ router.get('/:keyword', function (req, res) {
 router.delete('/', function (req, res) {
   allParagraph = {};
   allWords = {};
-  res.send('done');
+  res.send('reset successfully');
 });
 
 module.exports = router;

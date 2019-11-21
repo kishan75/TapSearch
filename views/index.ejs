@@ -1,0 +1,83 @@
+<html>
+
+<head>
+  <h1>TapSearch</h1>
+  <script>
+    function submit() {
+      var xhr = new XMLHttpRequest();
+      var formData = {
+        paragraph: document.getElementById('paragraph').value
+      };
+      xhr.open('POST', "/indexing");
+      xhr.setRequestHeader("Content-type", "application/json");
+      xhr.send(JSON.stringify(formData));
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status == 200)
+            alert("you paragraph submitted");
+          else
+            alert("something is not right");
+        }
+      }
+    }
+
+    function reset() {
+      var xhr = new XMLHttpRequest();
+      xhr.open('DELETE', '/indexing');
+      xhr.responseType = "json";
+      xhr.send();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status == 200)
+            alert('data reset successfully !');
+          else
+            alert('something is not write');
+        }
+      }
+    }
+
+    function search() {
+      var keyword = document.getElementById('keyword').value;
+      if (keyword == '') {
+        alert('please insert keyword');
+        return;
+      }
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/indexing/' + keyword);
+      xhr.responseType = "json";
+      xhr.send();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status == 200) {
+            var list = document.getElementById("allParagraph");
+            while (list.hasChildNodes()) {
+              list.removeChild(list.firstChild);
+            }
+            xhr.response.forEach(paragraph => {
+              var para = document.createElement("P"); // Create a <p> node
+              var t = document.createTextNode(paragraph); // Create a text node
+              para.appendChild(t); // Append the text to <p>
+              document.getElementById("allParagraph").appendChild(para);
+            });
+          } else
+            alert(xhr.statusText);
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <textarea name="paragraph" id="paragraph" rows="30" cols="90"> insert your pragraph</textarea>
+  <input type="button" value="submit" onclick="submit()" id="submit">
+  <br><br>enter keyword:
+  <input type="keyword" name="keyword" id="keyword">
+  <input type="button" value="search" onclick="search()">
+  <br><br>
+  <input type="button" value="reset all data" onclick="reset()">
+  <br><br>
+  <div id="allParagraph">
+  </div>
+</body>
+
+</html>
